@@ -1,0 +1,57 @@
+[
+    {
+        "id": "1",
+        "icon": "silverware-fork-knife",
+        "title": "Fazer o almoço",
+        "status": "done",
+        "description": "comida po bicep",
+        "type": "kitchen",
+        "options": ""
+    },
+    {
+        "id": "2",
+        "icon": "dumbbell",
+        "title": "Ir ao gym",
+        "status": "todo",
+        "description": "transformar a comida em bicep",
+        "type": "ferro",
+        "options": ""
+    },
+    {
+        "id": "3",
+        "icon": "xml",
+        "title": "Commit diário",
+        "status": "done",
+        "description": "nao falha um dia",
+        "type": "code",
+        "options": ""
+    },
+    {
+        "id": "4",
+        "icon": "silverware-fork-knife",
+        "title": "Fazer o almoço",
+        "status": "done",
+        "description": "comida po bicep",
+        "type": "kitchen",
+        "options": ""
+    },
+    {
+        "id": "5",
+        "icon": "dumbbell",
+        "title": "Ir ao gym",
+        "status": "todo",
+        "description": "transformar a comida em bicep",
+        "type": "ferro",
+        "options": ""
+    },
+    {
+        "id": "6",
+        "icon": "xml",
+        "title": "Commit diário",
+        "status": "done",
+        "description": "nao falha um dia",
+        "type": "code",
+        "options": ""
+    }
+    
+]
