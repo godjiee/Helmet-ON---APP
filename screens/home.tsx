@@ -10,7 +10,7 @@ import {
 import {Button, IconButton, ActivityIndicator} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
-import PaperCard from '../components/PaperCard';
+import PaperTaskCard from '../components/PaperTaskCard';
 import PaperButton from '../components/PaperButton';
 import data from '../utils/data.json'; // Ensure this path is correct
 import fontScaling from '../utils/fontScaling';
@@ -21,7 +21,7 @@ export default function Home() {
 
   const renderItem = ({item}) => (
     <TouchableHighlight onPress={() => navigation.navigate('Details')}>
-      <PaperCard
+      <PaperTaskCard
         icon={item.icon}
         title={item.title}
         status={item.status}
@@ -35,6 +35,7 @@ export default function Home() {
     <SafeAreaView style={styles.container}>
       <View style={styles.textContainer}>
         <Text style={styles.title}>HELMET ON</Text>
+        <Text style={styles.subtitle}>Your Battle Plan for Productivity</Text>
       </View>
       <View style={styles.buttonContainer}>
         {/* <IconButton
@@ -93,6 +94,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
     fontSize: fontScaling(5),
+  },
+  subtitle: {
+    textAlign: 'center',
+    marginTop: hp('0.5%'),
+    fontFamily: 'Roboto',
+    color: '#444',
+    fontSize: fontScaling(1.8),
   },
   cardContainer: {
     flex: 1,

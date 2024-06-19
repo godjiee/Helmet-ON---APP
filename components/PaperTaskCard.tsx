@@ -1,14 +1,14 @@
 import * as React from 'react';
 import {Button, Card, Text, useTheme} from 'react-native-paper';
 import {View, StyleSheet} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; // Import MaterialCommunityIcons
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import fontScaling from '../utils/fontScaling';
 import {hp, wp} from '../utils/screenSizes';
 
-const PaperCard = ({title, status, description, type, icon}) => {
+const PaperTaskCard = ({title, status, description, type, icon}) => {
   const theme = useTheme();
 
-  const iconSize = hp('3.5%'); // Icon size set to 24 for consistency
+  const iconSize = hp('3.5%');
   const fontSize = fontScaling(2);
 
   return (
@@ -45,41 +45,31 @@ const PaperCard = ({title, status, description, type, icon}) => {
               {title}
             </Text>
           </View>
+          {status.toLowerCase() === 'done' ? (
+            <View style={[styles.statusPill, {backgroundColor: '#047857'}]}>
+              <Text style={styles.statusPillText}>Done</Text>
+            </View>
+          ) : (
+            <View style={[styles.statusPill, {backgroundColor: '#999'}]}>
+              <Text style={styles.statusPillText}>To Do</Text>
+            </View>
+          )}
         </View>
         <View style={styles.secondTextContainer}>
           <Text
             style={[
               styles.contentText,
               {
-                color: 'black',
+                color: '#555',
                 fontFamily: 'Roboto',
                 fontSize: fontSize,
               },
             ]}>
             {description}
           </Text>
-          <Text
-            style={[
-              styles.contentText,
-              {
-                color: 'black',
-                fontFamily: 'Roboto',
-                fontSize: fontSize,
-              },
-            ]}>
-            {status}
-          </Text>
-          <Text
-            style={[
-              styles.contentText,
-              {
-                color: 'black',
-                fontFamily: 'Roboto',
-                fontSize: fontSize,
-              },
-            ]}>
-            {type}
-          </Text>
+          <View style={styles.typeTag}>
+            <Text style={styles.typeTagText}>{type}</Text>
+          </View>
         </View>
       </Card.Content>
     </Card>
@@ -89,11 +79,14 @@ const PaperCard = ({title, status, description, type, icon}) => {
 const styles = StyleSheet.create({
   firstTextContainer: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center', // Align items in the center vertically
     marginVertical: hp('0.5%'),
   },
   cardIcon: {
     marginRight: wp('2%'),
+  },
+  text: {
+    flex: 1, // Allow text to take available space
   },
   secondTextContainer: {
     flexDirection: 'column',
@@ -107,6 +100,28 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     fontSize: 40,
   },
+  statusPill: {
+    borderRadius: 10,
+    paddingVertical: 2,
+    paddingHorizontal: 10,
+    marginLeft: wp('2%'), // Add margin to separate from the title
+  },
+  statusPillText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  typeTag: {
+    backgroundColor: 'white', // Background color for the type tag
+    borderRadius: 10,
+    paddingVertical: 2,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    marginTop: hp('1%'),
+  },
+  typeTagText: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
 });
 
-export default PaperCard;
+export default PaperTaskCard;

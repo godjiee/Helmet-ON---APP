@@ -1,0 +1,25 @@
+[
+    {
+        "id": "1",
+        "icon": "theme-light-dark",
+        "title": "Theme",
+        "status": false,
+        "description": "Change the theme"
+    },
+    {
+        "id": "2",
+        "icon": "star",
+        "title": "Rate the app",
+        "status": "none",
+        "description": "Please rate the application and let me know which features you feel are missing.",
+        "link": "https://play.google.com/store/games?hl=en&pli=1"
+    },
+    {
+        "id": "3",
+        "icon": "coffee",
+        "title": "Donate",
+        "status": "none",
+        "description": "If you'd like to support my work, you can buy me a coffee to help me keep learning and developing.",
+        "link": "https://buymeacoffee.com/godjiee"
+    }
+]
