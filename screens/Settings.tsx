@@ -5,14 +5,10 @@ import {
   View,
   FlatList,
   SafeAreaView,
-  TouchableHighlight,
   Linking,
 } from 'react-native';
-import {Button, IconButton, ActivityIndicator} from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
 import PaperSettingsCard from '../components/PaperSettingsCard';
-import PaperButton from '../components/PaperButton';
 import data from '../utils/settingsData.json'; // Ensure this path is correct
 import fontScaling from '../utils/fontScaling';
 import {hp, wp} from '../utils/screenSizes';
@@ -28,24 +24,16 @@ export default function Settings() {
     }
   };
 
-  const renderItem = ({item}) =>
-    item.status === 'none' ? (
-      <TouchableHighlight onPress={() => handlePress(item)}>
-        <PaperSettingsCard
-          icon={item.icon}
-          title={item.title}
-          description={item.description}
-          status={item.status}
-        />
-      </TouchableHighlight>
-    ) : (
-      <PaperSettingsCard
-        icon={item.icon}
-        title={item.title}
-        description={item.description}
-        status={item.status}
-      />
-    );
+  const renderItem = ({item}) => (
+    <PaperSettingsCard
+      icon={item.icon}
+      title={item.title}
+      description={item.description}
+      status={item.status}
+      onPress={() => handlePress(item)}
+      notAnimated={item.status !== 'none'}
+    />
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -85,7 +73,6 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flex: 1,
-    paddingHorizontal: wp('2%'),
     paddingBottom: hp('3%'),
   },
 });

@@ -1,92 +1,126 @@
 import * as React from 'react';
-import {Button, Card, Text, useTheme} from 'react-native-paper';
-import {View, StyleSheet} from 'react-native';
+import {
+  Animated,
+  StyleSheet,
+  View,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import {Card, Text} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import fontScaling from '../utils/fontScaling';
 import {hp, wp} from '../utils/screenSizes';
 
-const PaperTaskCard = ({title, status, description, type, icon}) => {
-  const theme = useTheme();
+const PaperTaskCard = ({
+  title,
+  status,
+  description,
+  type,
+  icon,
+  hideCardInfo,
+  onPress,
+}) => {
+  const iconSize = hp('3%');
+  const scaleValue = new Animated.Value(1);
 
-  const iconSize = hp('3.5%');
-  const fontSize = fontScaling(2);
+  const animateIn = () => {
+    Animated.timing(scaleValue, {
+      toValue: 0.95,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const animateOut = () => {
+    Animated.timing(scaleValue, {
+      toValue: 1,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
+  };
 
   return (
-    <Card
-      style={{
-        borderRadius: 20,
-        borderWidth: 2,
-        borderColor: 'black',
-        width: '100%',
-        justifyContent: 'center',
-        overflow: 'hidden',
-      }}>
-      <Card.Content>
-        <View style={styles.firstTextContainer}>
-          <View style={styles.icon}>
-            <MaterialCommunityIcons
-              color={'black'}
-              name={icon}
-              size={iconSize}
-              style={styles.cardIcon}
-            />
-          </View>
-          <View style={styles.text}>
-            <Text
-              variant="titleLarge"
-              style={[
-                styles.title,
-                {
-                  color: 'black',
-                  fontFamily: 'Roboto',
-                  fontSize: fontScaling(3),
-                },
-              ]}>
-              {title}
-            </Text>
-          </View>
-          {status.toLowerCase() === 'done' ? (
-            <View style={[styles.statusPill, {backgroundColor: '#047857'}]}>
-              <Text style={styles.statusPillText}>Done</Text>
+    <Animated.View style={{transform: [{scale: scaleValue}]}}>
+      <TouchableWithoutFeedback
+        onPressIn={animateIn}
+        onPressOut={animateOut}
+        onPress={onPress}>
+        <Card style={styles.card}>
+          <Card.Content>
+            <View style={styles.firstTextContainer}>
+              <MaterialCommunityIcons
+                color={'#333'}
+                name={icon}
+                size={iconSize}
+                style={styles.cardIcon}
+              />
+              <View style={styles.textContainer}>
+                <Text style={styles.title}>{title}</Text>
+              </View>
+              <View
+                style={[
+                  styles.statusPill,
+                  {
+                    backgroundColor:
+                      status.toLowerCase() === 'done' ? '#047857' : '#999',
+                  },
+                ]}>
+                <Text style={styles.statusPillText}>{status}</Text>
+              </View>
             </View>
-          ) : (
-            <View style={[styles.statusPill, {backgroundColor: '#999'}]}>
-              <Text style={styles.statusPillText}>To Do</Text>
-            </View>
-          )}
-        </View>
-        <View style={styles.secondTextContainer}>
-          <Text
-            style={[
-              styles.contentText,
-              {
-                color: '#555',
-                fontFamily: 'Roboto',
-                fontSize: fontSize,
-              },
-            ]}>
-            {description}
-          </Text>
-          <View style={styles.typeTag}>
-            <Text style={styles.typeTagText}>{type}</Text>
-          </View>
-        </View>
-      </Card.Content>
-    </Card>
+            {!hideCardInfo && (
+              <View style={styles.secondTextContainer}>
+                <Text style={styles.contentText}>{description}</Text>
+                <View style={styles.typeTag}>
+                  <Text style={styles.typeTagText}>{type}</Text>
+                </View>
+              </View>
+            )}
+          </Card.Content>
+        </Card>
+      </TouchableWithoutFeedback>
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
+  card: {
+    borderRadius: 15,
+    borderWidth: 0,
+    backgroundColor: '#fff',
+    marginBottom: hp('1%'),
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 5,
+    width: '95%',
+    alignSelf: 'center',
+  },
   firstTextContainer: {
     flexDirection: 'row',
-    alignItems: 'center', // Align items in the center vertically
+    alignItems: 'center',
     marginVertical: hp('0.5%'),
   },
   cardIcon: {
-    marginRight: wp('2%'),
+    marginRight: wp('3%'),
   },
-  text: {
-    flex: 1, // Allow text to take available space
+  textContainer: {
+    flex: 1,
+  },
+  title: {
+    color: '#333',
+    fontFamily: 'Roboto',
+    fontSize: fontScaling(2.5),
+    fontWeight: 'bold',
+  },
+  statusPill: {
+    borderRadius: 20,
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+  },
+  statusPillText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
   secondTextContainer: {
     flexDirection: 'column',
@@ -94,32 +128,19 @@ const styles = StyleSheet.create({
     marginVertical: hp('0.5%'),
   },
   contentText: {
-    width: '100%',
-  },
-  title: {
+    color: '#555',
     fontFamily: 'Roboto',
-    fontSize: 40,
-  },
-  statusPill: {
-    borderRadius: 10,
-    paddingVertical: 2,
-    paddingHorizontal: 10,
-    marginLeft: wp('2%'), // Add margin to separate from the title
-  },
-  statusPillText: {
-    color: 'white',
-    fontWeight: 'bold',
+    fontSize: fontScaling(1.5),
   },
   typeTag: {
-    backgroundColor: 'white', // Background color for the type tag
+    backgroundColor: '#333',
     borderRadius: 10,
-    paddingVertical: 2,
-    paddingHorizontal: 10,
-    borderWidth: 1,
+    paddingVertical: 4,
+    paddingHorizontal: 12,
     marginTop: hp('1%'),
   },
   typeTagText: {
-    color: 'black',
+    color: '#fff',
     fontWeight: 'bold',
   },
 });
