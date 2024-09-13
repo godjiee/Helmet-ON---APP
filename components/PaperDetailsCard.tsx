@@ -1,9 +1,10 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {StyleSheet, View, TouchableOpacity, Animated, Text} from 'react-native';
-import {Card, Divider} from 'react-native-paper';
+import {Card, Divider, IconButton} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import fontScaling from '../utils/fontScaling';
 import {hp, wp} from '../utils/screenSizes';
+import { useNavigation } from '@react-navigation/native';
 
 const CustomSwitch = ({isOn, onToggle}) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
@@ -19,60 +20,67 @@ const CustomSwitch = ({isOn, onToggle}) => {
   const backgroundColor = animatedValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['#D0E2F2', '#D0F2E2'],
-  });
+  })};
 
-  return (
-    <TouchableOpacity
-      style={[styles.switchContainer, {backgroundColor}]}
-      onPress={onToggle}>
-      <Text style={[styles.switchText, {color: isOn ? '#047857' : '#999'}]}>
-        {isOn ? 'done' : 'todo'}
-      </Text>
-      <Text style={[styles.switchText, {color: isOn ? '#999' : '#047857'}]}>
-        {isOn ? 'todo' : 'done'}
-      </Text>
-    </TouchableOpacity>
-  );
-};
+  const PaperDetailsCard = ({ status, description, type, icon, taskId, removeTask }) => {
+    const [isSwitchOn, setIsSwitchOn] = useState(false);
+    const navigation = useNavigation();
 
-const PaperDetailsCard = ({status, description, type, icon}) => {
-  const [isSwitchOn, setIsSwitchOn] = useState(false);
-
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
-
-  return (
-    <Card style={styles.card}>
-      <Card.Content>
-        <View style={styles.infoContainer}>
-          <Text style={styles.infoTitle}>Status:</Text>
-          <View
-            style={[
-              styles.statusPill,
-              {
-                backgroundColor:
-                  status.toLowerCase() === 'done' ? '#047857' : '#999',
-              },
-            ]}>
-            <Text style={styles.statusPillText}>{status}</Text>
+    const handleDeleteTask = () => {
+      removeTask(taskId);
+      navigation.navigate('Home');
+    };
+  
+    const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+  
+    return (
+      <Card style={styles.card}>
+        <Card.Content>
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoTitle}>Status:</Text>
+            <View
+              style={[
+                styles.statusPill,
+                {
+                  backgroundColor: status.toLowerCase() === 'done' ? '#047857' : '#999',
+                },
+              ]}
+            >
+              <Text style={styles.statusPillText}>{status}</Text>
+            </View>
+            <CustomSwitch isOn={isSwitchOn} onToggle={onToggleSwitch} />
           </View>
-          <CustomSwitch isOn={isSwitchOn} onToggle={onToggleSwitch} />
-        </View>
-        <Divider style={styles.divider} />
-        <View style={styles.infoContainer}>
-          <Text style={styles.infoTitle}>Description:</Text>
-          <Text style={styles.infoText}>{description}</Text>
-        </View>
-        <Divider style={styles.divider} />
-        <View style={styles.infoContainer}>
-          <Text style={styles.infoTitle}>Type:</Text>
-          <Text style={styles.typeTagText}>{type}</Text>
-        </View>
-      </Card.Content>
-    </Card>
-  );
-};
-
+          <Divider style={styles.divider} />
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoTitle}>Description:</Text>
+            <Text style={styles.infoText}>{description}</Text>
+          </View>
+          <Divider style={styles.divider} />
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoTitle}>Type:</Text>
+            <Text style={styles.typeTagText}>{type}</Text>
+            <IconButton
+              icon="delete"
+              iconColor="#FF6F6F"
+              size={hp('3%')}
+              onPress={handleDeleteTask} // Trigger removeTask with the taskId
+              style={styles.deleteIcon}
+            />
+          </View>
+        </Card.Content>
+      </Card>
+    );
+  };
+  
+  
 const styles = StyleSheet.create({
+
+  deleteIcon: {
+    position: 'absolute',
+    right: 10,
+    top: 10,
+  },
+
   card: {
     borderRadius: 15,
     marginVertical: hp('2%'),

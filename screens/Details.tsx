@@ -7,8 +7,16 @@ import fontScaling from '../utils/fontScaling';
 import {hp, wp} from '../utils/screenSizes';
 import PaperDetailsCard from '../components/PaperDetailsCard';
 import data from '../utils/data.json';
+import { useFormContext } from '../context/FormProvider';
+import { useRoute } from '@react-navigation/native';
+
 
 export default function Details() {
+
+  const route = useRoute(); // Get the route object
+  const { taskId } = route.params; // Extract taskId from route params
+
+  const { removeTask } = useFormContext();
   const navigation = useNavigation();
 
   return (
@@ -30,6 +38,8 @@ export default function Details() {
             status={'done'}
             description={'description'}
             type={'food'}
+            taskId={taskId}
+            removeTask={removeTask}
           />
         </View>
       </ScrollView>
